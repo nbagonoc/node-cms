@@ -4,6 +4,7 @@ const exhbs = require("express-handlebars");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
+const expressValidator = require("express-validator");
 const upload = require("express-fileupload");
 const flash = require("connect-flash");
 const session = require("express-session");
@@ -47,6 +48,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // method-override
 app.use(methodOverride("_method"));
+// express-validator
+app.use(expressValidator());
 // express-file-upload
 app.use(upload());
 // express-session

@@ -7,7 +7,7 @@ const Category = require("../../models/Category");
 const { ensureAuthenticated } = require("../../guards/guards");
 
 // change the main layout to user, isntead of the main layout
-router.all("/*", (req, res, next) => {
+router.all("/*", ensureAuthenticated, (req, res, next) => {
   req.app.locals.layout = "user";
   next();
 });
@@ -28,7 +28,7 @@ router.all("/*", (req, res, next) => {
 // });
 
 // initial route
-router.get("/dashboard", (req, res) => {
+router.get("/dashboard", ensureAuthenticated, (req, res) => {
   const promises = [
     Post.count({ user: req.user.id }).exec(),
     Category.count().exec(),
@@ -44,7 +44,7 @@ router.get("/dashboard", (req, res) => {
 });
 
 // POST Generate dummy data
-router.post("/generate-dummy-data", (req, res) => {
+router.post("/generate-dummy-data", ensureAuthenticated, (req, res) => {
   for (let i = 0; i < req.body.dummyAmount; i++) {
     let data = new Post();
 

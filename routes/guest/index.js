@@ -5,6 +5,7 @@ const Category = require("../../models/Category");
 const User = require("../../models/User");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
+const { ensureAuthenticated } = require("../../guards/guards");
 
 // change the main layout to user, isntead of the main layout
 router.all("/*", (req, res, next) => {
@@ -52,15 +53,31 @@ router.get("/login", (req, res) => {
 
 // POST | login
 router.post("/login", (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/user/dashboard",
-    failureRedirect: "/login",
-    failureFlash: true
-  })(req, res, next);
+  const { email, password } = req.body;
+
+  // validator
+  req.checkBody("email", "Email is required").notEmpty();
+  req.checkBody("email", "Email is not valid").isEmail();
+  req.checkBody("password", "Password is required").notEmpty();
+
+  const errors = req.validationErrors();
+
+  if (errors) {
+    res.render("guest/login", {
+      errors,
+      email
+    });
+  } else {
+    passport.authenticate("local", {
+      successRedirect: "/user/dashboard",
+      failureRedirect: "/login",
+      failureFlash: true
+    })(req, res, next);
+  }
 });
 
 // GET | logout route
-router.get("/logout", (req, res) => {
+router.get("/logout", ensureAuthenticated, (req, res) => {
   req.logout();
   req.flash("success_message", "You have successfully logged out");
   res.redirect("/login");
@@ -73,25 +90,19 @@ router.get("/register", (req, res) => {
 
 // POST | register process
 router.post("/register", (req, res) => {
-  let errors = [];
   const { firstName, lastName, email, password, passwordConfirm } = req.body;
 
-  if (!firstName) {
-    errors.push({ message: "Name is required" });
-  }
-  if (!lastName) {
-    errors.push({ message: "Last name is required" });
-  }
-  if (!email) {
-    errors.push({ message: "Email is required" });
-  }
-  if (!password) {
-    errors.push({ message: "Password is required" });
-  }
-  if (password != passwordConfirm) {
-    errors.push({ message: "Confirm password did not match" });
-  }
-  if (errors.length > 0) {
+  // validator
+  req.checkBody("firstName", "First name is required").notEmpty();
+  req.checkBody("lastName", "Last name is required").notEmpty();
+  req.checkBody("email", "Email is required").notEmpty();
+  req.checkBody("email", "Email is not valid").isEmail();
+  req.checkBody("password", "Password is required").notEmpty();
+  req.checkBody("passwordConfirm", "Password did not match").equals(password);
+
+  const errors = req.validationErrors();
+
+  if (errors) {
     res.render("guest/register", {
       errors,
       firstName,

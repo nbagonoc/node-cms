@@ -4,13 +4,13 @@ const Category = require("../../models/Category");
 const { ensureAuthenticated } = require("../../guards/guards");
 
 // change the main layout to user, isntead of the main layout
-router.all("/*", (req, res, next) => {
+router.all("/*", ensureAuthenticated, (req, res, next) => {
   req.app.locals.layout = "user";
   next();
 });
 
 // GET | dispaly category page
-router.get("/", (req, res) => {
+router.get("/", ensureAuthenticated, (req, res) => {
   Category.find({})
     .then(categories => {
       res.render("user/categories", { categories });
@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
 });
 
 // POST | Create process
-router.post("/create", (req, res) => {
+router.post("/create", ensureAuthenticated, (req, res) => {
   const newCategory = Category({
     name: req.body.name
   });
@@ -37,7 +37,7 @@ router.post("/create", (req, res) => {
 });
 
 // GET | edit category page
-router.get("/edit/:id", (req, res) => {
+router.get("/edit/:id", ensureAuthenticated, (req, res) => {
   Category.findOne({ _id: req.params.id })
     .then(category => {
       res.render("user/categoriesEdit", { category });
@@ -48,7 +48,7 @@ router.get("/edit/:id", (req, res) => {
 });
 
 // PATCH | edit category process
-router.patch("/edit/:id", (req, res) => {
+router.patch("/edit/:id", ensureAuthenticated, (req, res) => {
   Category.findOne({ _id: req.params.id })
     .then(category => {
       category.name = req.body.name;
@@ -69,7 +69,7 @@ router.patch("/edit/:id", (req, res) => {
 });
 
 // Delete | delete a category
-router.delete("/delete/:id", (req, res) => {
+router.delete("/delete/:id", ensureAuthenticated, (req, res) => {
   Category.remove({ _id: req.params.id })
     .then(deleted => {
       req.flash("success_message", "Successfully deleted category");

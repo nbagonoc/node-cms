@@ -6,14 +6,15 @@ const { isEmpty } = require("../../helpers/upload");
 const { ensureAuthenticated } = require("../../guards/guards");
 
 // change the main layout to user, isntead of the main layout
-router.all("/*", (req, res, next) => {
+router.all("/*", ensureAuthenticated, (req, res, next) => {
   req.app.locals.layout = "user";
   next();
 });
 
 // view posts
-router.get("/", (req, res) => {
+router.get("/", ensureAuthenticated, (req, res) => {
   Post.find({ user: req.user.id })
+    .sort({ _id: -1 })
     .populate("category")
     .then(datas => {
       res.render("user/posts", { datas });
@@ -24,14 +25,14 @@ router.get("/", (req, res) => {
 });
 
 // GET create posts
-router.get("/create", (req, res) => {
+router.get("/create", ensureAuthenticated, (req, res) => {
   Category.find({}).then(categories => {
     res.render("user/create", { categories });
   });
 });
 
 // POST create posts
-router.post("/create", (req, res) => {
+router.post("/create", ensureAuthenticated, (req, res) => {
   let errors = [];
 
   if (!req.body.title) {
@@ -88,7 +89,7 @@ router.post("/create", (req, res) => {
 });
 
 // GET | edit post
-router.get("/edit/:id", (req, res) => {
+router.get("/edit/:id", ensureAuthenticated, (req, res) => {
   Post.findOne({ _id: req.params.id })
     .then(data => {
       Category.find({}).then(categories => {
@@ -101,7 +102,7 @@ router.get("/edit/:id", (req, res) => {
 });
 
 // POST | edit post process
-router.patch("/edit/:id", (req, res) => {
+router.patch("/edit/:id", ensureAuthenticated, (req, res) => {
   // allow comments checkbox
   let allowComments = true;
 
@@ -141,7 +142,7 @@ router.patch("/edit/:id", (req, res) => {
 });
 
 // DELETE | delete a post
-router.delete("/delete/:id", (req, res) => {
+router.delete("/delete/:id", ensureAuthenticated, (req, res) => {
   Post.findOne({ _id: req.params.id })
     .populate("comments")
     .then(post => {

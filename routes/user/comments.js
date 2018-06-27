@@ -5,12 +5,12 @@ const Comment = require("../../models/Comment");
 const { ensureAuthenticated } = require("../../guards/guards");
 
 // change the main layout to user, isntead of the main layout
-router.all("/*", (req, res, next) => {
+router.all("/*", ensureAuthenticated, (req, res, next) => {
   req.app.locals.layout = "user";
   next();
 });
 
-router.post("/approve-comment", (req, res) => {
+router.post("/approve-comment", ensureAuthenticated, (req, res) => {
   Comment.findByIdAndUpdate(
     req.body.id,
     { $set: { approveComment: req.body.approveComment } },
@@ -22,7 +22,7 @@ router.post("/approve-comment", (req, res) => {
 });
 
 // GET | View all comments
-router.get("/", (req, res) => {
+router.get("/", ensureAuthenticated, (req, res) => {
   Comment.find({})
     .populate("user")
     .then(comments => {
@@ -31,7 +31,7 @@ router.get("/", (req, res) => {
 });
 
 // POST | submit a comment
-router.post("/:id", (req, res) => {
+router.post("/:id", ensureAuthenticated, (req, res) => {
   Post.findOne({ _id: req.params.id }).then(post => {
     const newComment = new Comment({
       user: req.user.id,
@@ -51,7 +51,7 @@ router.post("/:id", (req, res) => {
 });
 
 // DELETE | delete a comment
-router.delete("/delete/:id", (req, res) => {
+router.delete("/delete/:id", ensureAuthenticated, (req, res) => {
   Comment.remove({ _id: req.params.id })
     .then(result => {
       Post.findOneAndUpdate(
