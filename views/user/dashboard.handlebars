@@ -1,3 +1,12 @@
-<div class="container mt-3">
-    this is the dashboard
-</div>
+<h3 class="text-capitalize">
+    dashboard</h3>
+<hr>
+<canvas id="myChart"></canvas>
+<hr>
+<form action="/user/generate-dummy-data" method="post" class="mb-3">
+    <div class="form-group">
+        <label for="">Generate dummy data</label>
+        <input name="dummyAmount" type="number" class="form-control" placeholder="Enter a value, to generate dummy data">
+    </div>
+    <button type="submit" class="btn btn-outline-success" style="cursor:pointer">Generate</button>
+</form>

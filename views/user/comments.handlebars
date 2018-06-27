@@ -1,0 +1,31 @@
+<h3 class="text-capitalize">
+    Comments</h3>
+<hr> {{> guest/form-msgs}}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>By</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each comments}}
+        <tr>
+            <td>{{user.firstName}} {{user.lastName}}</td>
+            <td>
+                <input data-id="{{id}}" type="checkbox" {{#if approveComment}} checked {{/if}} name="approveComment" />
+            </td>
+            <td>{{formatDate date "MMMM Do YYYY"}}</td>
+            <td>
+                <form action="/user/comments/delete/{{id}}?_method=DELETE" method="post" class="float-left">
+                    <button type="submit" class="btn btn-outline-danger btn-sm" style="cursor:pointer">
+                        <i class="fa fa-trash mr-1"></i>Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

@@ -1,0 +1,38 @@
+<h3 class="text-capitalize">
+    categories</h3>
+<hr> {{> guest/form-msgs}}
+<div class="row">
+    <div class="col-md-6">
+        <form action="/user/categories/create" method="post">
+            <div class="form-group">
+                <input type="text" name="name" class="form-control" placeholder="Category name">
+            </div>
+            <input type="submit" value="Create category" class="btn btn-outline-success" style="cursor:pointer">
+        </form>
+    </div>
+    <div class="col-md-6">
+        <table class="table">
+            <thead>
+                <td>Name</td>
+                <td>Actions</td>
+            </thead>
+            <tbody>
+                {{#each categories}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>
+                        <a href="/user/categories/edit/{{id}}" class="btn btn-outline-success btn-sm float-left mr-1">
+                            <i class="fa fa-pencil mr-1"></i>Edit
+                        </a>
+                        <form action="/user/categories/delete/{{id}}?_method=DELETE" method="post" class="float-left">
+                            <button type="submit" class="btn btn-outline-danger btn-sm" style="cursor:pointer">
+                                <i class="fa fa-trash mr-1"></i>Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

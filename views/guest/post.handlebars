@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <img src="/uploads/{{data.image}}" alt="{{data.title}}" class="card-img-top">
+            <div class="card-body">
+                <h3 class="text-capitalize mb-0">{{data.title}}</h3>
+                <span class="text-muted small">By {{data.user.firstName}} {{data.user.lastName}} | On {{formatDate data.date "MMMM Do YYYY"}}</span>
+                <p class="font-weight-light">{{data.body}}</p>
+            </div>
+        </div>
+        {{#if data.allowComments}} {{#if user}}
+        <div class="card">
+            <div class="card-header">
+                Leave a comment
+            </div>
+            <div class="card-body">
+                <form action="/user/comments/{{data.id}}" method="post">
+                    <div class="form-group">
+                        <textarea name="body" rows="5" placeholder="Leave a comment" class="form-control"></textarea>
+                    </div>
+                    <input type="submit" value="Submit" class="btn btn-outline-success">
+                </form>
+            </div>
+        </div>
+        {{else}}
+        <div class="card">
+            <div class="card-header">
+                Leave a comment
+            </div>
+            <div class="card-body">
+                <a href="/login" class="btn btn-outline-success">sign-in</a> to leave a comment
+            </div>
+        </div>
+        {{/if}} {{#each data.comments}}
+        <div class="card mt-3">
+            <div class="card-body">
+                <p class="mb-0 text-capitalize">{{user.firstName}} {{user.lastName}}</p>
+                <span class="text-muted font-weight-light small">{{formatDate date "MMMM Do YYYY"}}</span>
+                <p class="mb-0 font-weight-light">{{body}}</p>
+            </div>
+        </div>
+        {{/each}} {{else}}
+        <div class="card mt-3">
+            <div class="card-body">
+                <p class="mb-0 font-weight-light">Comments has been disabled</p>
+            </div>
+        </div>
+        {{/if}}
+    </div>
+    {{> guest/sidebar}}
+</div>

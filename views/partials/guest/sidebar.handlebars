@@ -1,0 +1,14 @@
+<div class="col-md-4">
+    <div class="card mb-3">
+        <div class="card-header">
+            Latest Blog Post
+        </div>
+        <ul class="list-group list-group-flush">
+            {{#each otherPosts}}
+            <li class="list-group-item">
+                <a class="text-dark" href="/posts/post/{{slug}}">{{title}}</a>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>

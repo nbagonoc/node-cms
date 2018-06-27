@@ -1,18 +1,23 @@
-<div class="container mt-3">
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    main
-                </div>
+<div class="row">
+    <div class="col-md-8">
+        {{#each datas}}
+        <div class="card mb-3">
+            <a href="/posts/post/{{slug}}">
+                <img class="card-img-top" src="/uploads/{{image}}" alt="{{title}}">
+            </a>
+            <div class="card-body">
+                <a href="/posts/post/{{slug}}" class="text-dark">
+                    <h5 class="mb-0 text-capitalize">{{title}}</h5>
+                </a>
+                <span class="text-muted small">By:
+                    <span class="text-capitalize">{{user.firstName}} {{user.lastName}}</span> | On: {{formatDate date 'MMMM Do YYYY'}}</span>
+                <p class="mb-0 font-weight-light">{{body}}</p>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    sidebar
-                </div>
-            </div>
-        </div>
+        {{/each}}
+        <ul class="pagination justify-content-center">
+            {{#paginate current=current pages=pages}} {{/paginate}}
+        </ul>
     </div>
+    {{> guest/sidebar}}
 </div>

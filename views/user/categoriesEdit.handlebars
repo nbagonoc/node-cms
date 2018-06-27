@@ -1,0 +1,12 @@
+<h3 class="text-capitalize">Edit category</h3>
+<hr>
+<div class="row">
+    <div class="col-md-6">
+        <form action="/user/categories/edit/{{category.id}}?_method=PATCH" method="post">
+            <div class="form-group">
+                <input type="text" name="name" class="form-control" placeholder="Category name" value="{{category.name}}">
+            </div>
+            <input type="submit" value="Edit category" class="btn btn-outline-success" style="cursor:pointer">
+        </form>
+    </div>
+</div>

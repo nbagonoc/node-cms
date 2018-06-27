@@ -12,6 +12,19 @@
                     </a>
                 </li>
             </ul>
+            {{#if user}}
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user mr-1"></i>{{#if user}}{{user.firstName}}{{/if}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="/user/dashboard">Dashboard</a>
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                </li>
+            </ul>
+            {{else}}
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="/login">login</a>
@@ -20,6 +33,7 @@
                     <a class="nav-link" href="/register">register</a>
                 </li>
             </ul>
+            {{/if}}
         </div>
     </div>
 </nav>

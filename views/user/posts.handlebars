@@ -1,0 +1,41 @@
+<h3 class="text-capitalize">
+    Posts</h3>
+<hr> {{> guest/form-msgs}}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Image</th>
+            <th>Category</th>
+            <th>Created</th>
+            <th>Status</th>
+            <th>Comments</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each datas}}
+        <tr>
+            <td>{{title}}</td>
+            <td>
+                <img src="/uploads/{{image}}" alt="{{title}}" style="height:50px" class="img-fluid mx-auto d-block">
+            </td>
+            <td>{{category.name}}</td>
+            <td>{{formatDate date 'MMMM Do YYYY'}}</td>
+            <td>{{status}}</td>
+            <td>{{allowComments}}</td>
+            <td>
+                <a href="/posts/post/{{slug}}" class="btn btn-outline-success btn-sm float-left mr-1">
+                    <i class="fa fa-eye"></i> View</a>
+                <a href="/user/posts/edit/{{id}}" class="btn btn-outline-warning btn-sm float-left mr-1">
+                    <i class="fa fa-pencil mr-1"></i>Edit</a>
+                <form action="/user/posts/delete/{{id}}?_method=DELETE" method="post" class="float-left">
+                    <button type="submit" class="btn btn-outline-danger btn-sm" style="cursor:pointer">
+                        <i class="fa fa-trash mr-1"></i>Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
